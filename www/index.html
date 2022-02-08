@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PAI TP2 - Turmas</title>
+  </head>
+  <body>
+    <h1>Turmas</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ano</th>
+          <th>Letra</th>
+          <th>Curso</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="classesTableBody"></tbody>
+    </table>
+
+    <script src="vendors/mustache-4.1.0/mustache.min.js"></script>
+
+    <script src="scripts/entities/class.js"></script>
+    <script src="scripts/entities/student.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/template.js"></script>
+    <script src="scripts/main.js"></script>
+
+    <script lang="text/javascript">
+      window.onload = async function () {
+        await initializeApplication();
+
+        renderPage();
+      }
+
+      function renderPage() {
+        const classesTableBody = document.getElementById("classesTableBody");
+
+        // Remove all list items nodes
+        while (classesTableBody.hasChildNodes()) {
+          classesTableBody.removeChild(classesTableBody.lastChild);
+        }
+
+        const data = {
+          classes: []
+        };
+
+        window.storage.Classes.forEach((schoolClass) => {
+          const newClass = {
+            id: schoolClass.id,
+            year: schoolClass.year,
+            letter: schoolClass.letter,
+            course: schoolClass.course
+          };
+          data.classes.push(newClass);
+        });
+
+        const classRows = window.template.renderTemplate("classRows", data);
+        classesTableBody.appendChild(classRows);
+      }
+    </script>
+  </body>
+</html>

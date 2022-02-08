@@ -1,0 +1,23 @@
+{
+  "name": "pai-tp2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "serve": "node app.js"
+  },
+  "contributors": [
+    {
+      "name": "Diogo Costa",
+      "url": "https://github.com/skpdu"
+    },
+    {
+      "name": "Edgar Santos",
+      "url": "https://github.com/edgarbs1998"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
