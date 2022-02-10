@@ -3,5 +3,7 @@
   <td>{{ number }}</td>
   <td>{{ name }}</td>
   <td>{{ finalGrade }}</td>
+  <td><button onclick="editButton({{ number }}, '{{ name }}', {{ finalGrade }})">Editar</button></td>
+  <td><button onclick="deleteStudent( {{ number }} )">Apagar</button></td>
 </tr>
 {{ /students }}

@@ -3,7 +3,7 @@
 /**
  * @class Saves all the information needed to run the application
  * @constructs Storage
- * @property {Playlist[]} classes - array of objects of type Class, to store all the classes in our system
+ * @property {Class[]} classes - array of objects of type Class, to store all the classes in our system
  */
 class Storage {
   constructor() {
@@ -26,6 +26,8 @@ class Storage {
     ];
   }
 
+
+
   // Getters
   get Classes() {
     return this.classes;
@@ -36,9 +38,11 @@ class Storage {
    */
   loadFromStorage() {
     const classes = localStorage.getItem("classes");
-    if (!classes) return;
-
-    this.classes = JSON.parse(classes);
+    if (classes) {
+      this.classes = JSON.parse(classes);
+    } else {
+      localStorage.setItem("classes", JSON.stringify(this.classes));
+    }
   }
 
   /**
@@ -56,64 +60,58 @@ class Storage {
     return schoolClass;
   }
 
-  // /**
-  //  * Function that aims to add a Playlist feature
-  //  * @param {string} title The title of the new playlist
-  //  * @param {string} description The description of the new playlist
-  //  */
-  // addPlaylist(title, description) {
-  //   // Get next available id for the playlist
-  //   const id = this.retrieveNextPlaylistId();
+  /**
+   * Function that aims to add or edits a Student feature
+   * @param {string} studentName The name of the new student
+   */
+  createOrUpdateStudent(studentClass, studentNumber, studentName, finalGrade) {
+    const currentClass = this.classes.find(turma => turma.id === studentClass);
+    let student = currentClass.students.find((student) => student.number === studentNumber);
 
-  //   // Create playlist and add to array
-  //   const playlist = new Playlist(id, title, description);
-  //   this.playlists.push(playlist);
+    //create New Student
+    if (!student) {
+      student = new Student(studentNumber, studentName, finalGrade);
+      currentClass.students.push(student);
+    }
+    else {
+      student.name = studentName;
+      student.finalGrade = finalGrade;
+    }
+    // // Updates the DOM of the playlists
+    // window.viewManager.updatePlaylistsView(this.playlists);
 
-  //   // Updates the DOM of the playlists
-  //   window.viewManager.updatePlaylistsView(this.playlists);
+    // Update local storage
+    localStorage.setItem("classes", JSON.stringify(this.classes));
+  }
 
-  //   // Update local storage
-  //   localStorage.setItem("playlists", JSON.stringify(this.playlists));
-  // }
 
-  // /**
-  //  * Function that aims to update a Playlist resource
-  //  */
-  // updatePlaylist(id, title, description) {
-  //   // Checks if the playlist with the passed id exists
-  //   const playlist = this.playlists.find((playlist) => playlist.id === id);
-  //   if (!playlist) {
-  //     alert("A lista de reprodução selecionada não pôde ser encontrada!");
-  //   }
+  /**
+   * Function that aims to remove a Playlist resource
+   */
+  deleteStudent(studentClass, studentNumber) {
+    // Checks if the playlist with the passed id exists
+    const currentClass = this.classes.find(turma => turma.id === studentClass);
+    const index = currentClass.students.findIndex((student) => parseInt(student.number) === studentNumber);
+    console.dir(this.Classes);
+    console.log("studentNumber" + studentNumber);
+    console.log(index);
+    if (index === -1) {
+      alert("O aluno selecionado não pôde ser encontrado!");
+    }
 
-  //   // Updates playlist attributes
-  //   playlist.title = title;
-  //   playlist.description = description;
+    // Remove a playlist da array
+    currentClass.students.splice(index, 1);
 
-  //   // Updates the DOM of the playlists
-  //   window.viewManager.updatePlaylistsView(this.playlists);
+    // // Updates the DOM of the playlists
+    // window.viewManager.updatePlaylistsView(this.playlists);
 
-  //   // Update local storage
-  //   localStorage.setItem("playlists", JSON.stringify(this.playlists));
-  // }
+    // Update local storage
+    localStorage.setItem("classes", JSON.stringify(this.classes));
+  }
 
-  // /**
-  //  * Function that aims to remove a Playlist resource
-  //  */
-  // deletePlaylist(id) {
-  //   // Checks if the playlist with the passed id exists
-  //   const index = this.playlists.findIndex((playlist) => playlist.id === id);
-  //   if (index === -1) {
-  //     alert("A lista de reprodução selecionada não pôde ser encontrada!");
-  //   }
-
-  //   // Remove a playlist da array
-  //   this.playlists.splice(index, 1);
-
-  //   // Updates the DOM of the playlists
-  //   window.viewManager.updatePlaylistsView(this.playlists);
-
-  //   // Update local storage
-  //   localStorage.setItem("playlists", JSON.stringify(this.playlists));
-  // }
+  clearClass(studentClass) {
+    const currentClass = this.classes.find(turma => turma.id === studentClass);
+    currentClass.students = [];
+    localStorage.setItem("classes", JSON.stringify(this.classes));
+  }
 }
