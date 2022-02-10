@@ -59,8 +59,6 @@ class Storage {
 
   /**
    * Function that aims to get a Class feature
-   * @param {string} id The id of the class
-   * @returns the class object
    */
   getClass(id) {
     // Checks if the class with the passed id exists
@@ -74,7 +72,6 @@ class Storage {
 
   /**
    * Function that aims to add or edits a Student feature
-   * @param {string} studentName The name of the new student
    */
   createOrUpdateStudent(studentClass, studentNumber, studentName, finalGrade) {
     const currentClass = this.classes.find(
@@ -92,15 +89,13 @@ class Storage {
       student.name = studentName;
       student.finalGrade = finalGrade;
     }
-    // // Updates the DOM of the playlists
-    // window.viewManager.updatePlaylistsView(this.playlists);
 
     // Update local storage
     localStorage.setItem("classes", JSON.stringify(this.classes));
   }
 
   /**
-   * Function that aims to remove a Playlist resource
+   * Function that aims to remove a Student feature
    */
   deleteStudent(studentClass, studentNumber) {
     // Checks if the playlist with the passed id exists
@@ -120,13 +115,13 @@ class Storage {
     // Remove a playlist da array
     currentClass.students.splice(index, 1);
 
-    // // Updates the DOM of the playlists
-    // window.viewManager.updatePlaylistsView(this.playlists);
-
     // Update local storage
     localStorage.setItem("classes", JSON.stringify(this.classes));
   }
 
+  /**
+   * Function that aims to remove all students
+   */
   clearClass(studentClass) {
     const currentClass = this.classes.find(
       (turma) => turma.id === studentClass
