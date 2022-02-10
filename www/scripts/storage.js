@@ -19,14 +19,26 @@ class Storage {
       {
         id: 2,
         year: 11,
-        letter: "C",
+        letter: "A",
         course: "GPSI",
+        students: [],
+      },
+      {
+        id: 3,
+        year: 12,
+        letter: "A",
+        course: "GPSI",
+        students: [],
+      },
+      {
+        id: 4,
+        year: 11,
+        letter: "B",
+        course: "AR",
         students: [],
       },
     ];
   }
-
-
 
   // Getters
   get Classes() {
@@ -65,15 +77,18 @@ class Storage {
    * @param {string} studentName The name of the new student
    */
   createOrUpdateStudent(studentClass, studentNumber, studentName, finalGrade) {
-    const currentClass = this.classes.find(turma => turma.id === studentClass);
-    let student = currentClass.students.find((student) => student.number === studentNumber);
+    const currentClass = this.classes.find(
+      (turma) => turma.id === studentClass
+    );
+    let student = currentClass.students.find(
+      (student) => student.number === studentNumber
+    );
 
     //create New Student
     if (!student) {
       student = new Student(studentNumber, studentName, finalGrade);
       currentClass.students.push(student);
-    }
-    else {
+    } else {
       student.name = studentName;
       student.finalGrade = finalGrade;
     }
@@ -84,14 +99,17 @@ class Storage {
     localStorage.setItem("classes", JSON.stringify(this.classes));
   }
 
-
   /**
    * Function that aims to remove a Playlist resource
    */
   deleteStudent(studentClass, studentNumber) {
     // Checks if the playlist with the passed id exists
-    const currentClass = this.classes.find(turma => turma.id === studentClass);
-    const index = currentClass.students.findIndex((student) => parseInt(student.number) === studentNumber);
+    const currentClass = this.classes.find(
+      (turma) => turma.id === studentClass
+    );
+    const index = currentClass.students.findIndex(
+      (student) => parseInt(student.number) === studentNumber
+    );
     console.dir(this.Classes);
     console.log("studentNumber" + studentNumber);
     console.log(index);
@@ -110,7 +128,9 @@ class Storage {
   }
 
   clearClass(studentClass) {
-    const currentClass = this.classes.find(turma => turma.id === studentClass);
+    const currentClass = this.classes.find(
+      (turma) => turma.id === studentClass
+    );
     currentClass.students = [];
     localStorage.setItem("classes", JSON.stringify(this.classes));
   }
